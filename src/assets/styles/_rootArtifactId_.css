@@ -1,0 +1,55 @@
+.lpLogo {
+    margin-top: 15px;
+    margin-bottom: 40px;
+}
+
+.material-icons {
+    vertical-align: -2px;
+    margin-right: 5px;
+}
+
+iframe.seamless {
+    background-color: transparent;
+    border: 0 none transparent;
+
+    width: 100%;
+    /* 100 view height; minus: header, footer, and 2x padding */
+    min-height: calc(95vh - 56px - 50px - 24px - 24px);
+}
+
+.tt-query {
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999
+}
+
+.tt-menu {
+    width: 100%;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid rgba(120, 130, 140, 0.3);
+    border-top-width: 0;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+    font-size: 16px;
+    padding: 5px 10px;
+}
+
+.tt-suggestion:hover {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.870588);
+    background-color: rgb(66, 66, 66);
+}
+
+.alertify {
+    z-index: 99999;
+}
+
+.contributors {
+    background-color: #b8b8b8;
+    color: #ffffff;
+}

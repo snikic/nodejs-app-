@@ -1,0 +1,107 @@
+
+{
+  "name": "nodejs-app",
+  "description": "nodejs-app: Mission Control for LiveEngage",
+  "version": "0.0.1",
+  "homepage": "http://www.liveperson.com/",
+  "license": "UNLICENSED",
+  "author": {
+    "name": "ci",
+    "email": "ci@liveperson.com"
+  },
+  "contributors": [
+    {
+      "name": "CI",
+      "email": "ci@liveperson.com"
+    }
+  ],
+  "dependencies": {
+    "alertify.js": "~1.0.12",
+    "appmetrics": "~1.0.12",
+    "async": "~2.0.1",
+    "body-parser": "~1.15.2",
+    "cheerio": "~0.22.0",
+    "circuit-breaker-js": "~0.0.1",
+    "dnserrors": "~2.0.2",
+    "errno": "~0.1.4",
+    "expand-home-dir": "~0.0.3",
+    "express": "~4.14.0",
+    "express-enforces-ssl": "~1.1.0",
+    "express-validator": "~2.20.8",
+    "universal-analytics": "~0.4.2",
+    "gate-Keeperjs": "~1.0.5",
+    "glob": "~7.0.5",
+    "helmet": "~2.1.1",
+    "hjson": "~1.8.4",
+    "hpp": "~0.2.1",
+    "http-proxy": "~1.14.0",
+    "http-status": "~0.2.3",
+    "iframe-resizer": "~3.5.5",
+    "is-there": "~4.3.3",
+    "jquery": "~2.2.4",
+    "jsforce": "^1.7.0",
+    "jsrender": "~0.9.79",
+    "jsviews": "~0.9.79",
+    "lp-authentication": "~0.0.10",
+    "lp-js-cipherpass": "~0.0.1",
+    "lp-js-csds-client": "~0.0.7",
+    "lp_js_logger": "~0.1.17",
+    "marked": "^0.3.5",
+    "merge": "~1.2.0",
+    "moment": "~2.14.1",
+    "nconf": "~0.8.4",
+    "read-package-json": "~2.0.4",
+    "prom-client": "~3.4.6",
+    "tunnel-agent": "~0.4.3",
+    "requirejs": "~2.2.0",
+    "rewire": "~2.5.2",
+    "roboto-fontface": "~0.5.0",
+    "serve-favicon": "~2.3.0",
+    "serve-static": "~1.11.1",
+    "service-directoryjs": "~2.0.1",
+    "shelljs": "~0.7.2",
+    "store2": "~2.3.2",
+    "ua-parser-js": "~0.7.10",
+    "xss-filters": "~1.2.6"
+  },
+  "devDependencies": {
+    "eslint-plugin-security": "~1.2.0",
+    "eslint-teamcity": "^1.1.0",
+    "grunt": "~1.0.1",
+    "grunt-available-tasks": "~0.6.3",
+    "grunt-eslint": "~19.0.0",
+    "github": "~2.6.0",
+    "grunt-node-version": "~1.0.2",
+    "grunt-nsp": "~2.3.1",
+    "grunt-teamcity": "~0.1.5",
+    "hostile": "~1.0.3",
+    "intern": "~3.3.1",
+    "jscpd": "~0.6.3",
+    "js-yaml": "~3.6.1",
+    "load-grunt-config": "~0.19.2",
+    "requestretry": "~1.10.0",
+    "request": "~2.74.0",
+    "time-grunt": "~1.4.0",
+    "semver": "~5.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://lpgithub.dev.lprnd.net/nodejs-app/nodejs-app.git"
+  },
+  "keywords": [],
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app",
+    "test": "intern-runner config=tests/intern",
+    "localdev": "node ./debug/nodejs-app-ldk.js",
+    "postinstall": "node ./build/modules.js",
+    "grunt": "grunt"
+  },
+  "publishConfig": {
+    "registry": "http://tlvmvnrepository/artifactory/api/npm/lp-npm-local/"
+  },
+  "engines": {
+    "node": ">=4.4.6",
+    "npm": ">=3.0.0"
+  }
+}

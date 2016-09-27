@@ -1,0 +1,26 @@
+{
+    "integrationTest": {
+        "options": {
+            "runType": "runner",
+            "config": "tests/intern",
+            "reporters": ["Pretty", "JUnit"],
+            "suites": ["tests/integration/all"]
+        }
+    },
+    "unitTest": {
+        "options": {
+            "runType": "client",
+            "config": "tests/intern",
+            "reporters": ["TeamCity", "JUnit"],
+            "suites": ["tests/unit/all"]
+        }
+    },
+    "kubernetesTest": {
+        "options": {
+            "runType": "client",
+            "config": "tests/intern",
+            "reporters": ["TeamCity", "JUnit"],
+            "suites": ["tests/kubernetes/all"]
+        }
+    }
+}

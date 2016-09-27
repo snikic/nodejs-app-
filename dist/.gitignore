@@ -1,0 +1,5 @@
+# Ignore everything in this directory (but we want this directory versioned, so it is available after checkout; this is
+# needed, since some tools in the build/test process require the folder and don't create the folder by themselves)
+*
+# Except this file
+!.gitignore

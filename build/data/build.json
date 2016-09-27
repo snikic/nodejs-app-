@@ -1,0 +1,9 @@
+{
+  "buildNumber": "${build.number}",
+  "buildId": "${teamcity.build.id}",
+  "buildCommit": "${build.vcs.number}",
+  "buildDate": "${env.BUILD_START_DATE}_${env.BUILD_START_TIME}",
+  "buildAgent": "${agent.name}",
+  "appVersion": "${project.version}",
+  "appTimestamp": "${timestamp}"
+}

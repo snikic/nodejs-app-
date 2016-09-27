@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gidi.test</groupId>
+    <artifactId>nodejs-app-reactor</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>nodejs-app service</name>
+
+    <parent>
+        <groupId>com.liveperson.maven</groupId>
+        <artifactId>liveperson-parent</artifactId>
+        <version>4.0.4</version>
+    </parent>
+
+    <developers>
+		<developer>
+			<id>ci</id>
+			<name>ci</name>
+			<email>ci@liveperson.com</email>
+		</developer>
+	</developers>
+
+    <properties>
+        <project.namespace>${project.artifactId}</project.namespace>
+        <git.url>https://ci_user@lpgithub.dev.lprnd.net/nodejs-app/nodejs-app.git</git.url>
+
+        <!-- Web layer version: can be overwritten via TeamCity -->
+        <nodejs-app.web.layer.version>1.0.0-0-SNAPSHOT-b156</nodejs-app.web.layer.version>
+
+        <!--<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>-->
+        <!--<timestamp>${maven.build.timestamp}</timestamp>-->
+
+        <!-- fixes: https://github.com/whitesource/maven-plugin/issues/7 -->
+        <!--<lp.whitesource.plugin.version>3.2.1</lp.whitesource.plugin.version>-->
+    </properties>
+
+    <scm>
+        <connection>scm:git:${git.url}</connection>
+        <developerConnection>scm:git:${git.url}</developerConnection>
+        <url>${git.url}</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <build>
+        <resources>
+            <resource>
+                <!-- Resources that should be filtered. -->
+                <directory>${project.basedir}/build/data</directory>
+                <!-- Whether resources are filtered to replace tokens with parameterised values or
+                not. The values are taken from the properties element and from the properties
+                in the files listed in the filters element. -->
+                <filtering>true</filtering>
+                <targetPath>${project.basedir}/src/config</targetPath>
+                <includes>
+                    <include>build.json</include>
+                </includes>
+            </resource>
+            <resource>
+                <!-- Resources that should be filtered. -->
+                <directory>${project.basedir}</directory>
+                <!-- Whether resources are filtered to replace tokens with parameterised values or
+                not. The values are taken from the properties element and from the properties
+                in the files listed in the filters element. -->
+                <filtering>true</filtering>
+                <targetPath>${project.basedir}/target</targetPath>
+                <includes>
+                    <include>docker-compose.yml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>Process build resource files</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.liveperson.maven.checkmarx.plugins</groupId>
+                    <artifactId>checkmarx-plugin</artifactId>
+                    <version>${lp.checkmarx.plugin.version}</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <pathsToExclude>
+                            <!-- include only our source code... exclude external libraries or auto-generated code -->
+                            <param>/build</param>
+                            <param>/debug</param>
+                            <param>/dist</param>
+                            <param>/node_modules</param>
+                            <param>/src/assets</param> <!-- TODO: temp until we remove the assets folder anyway -->
+                        </pathsToExclude>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+            <activation>
+                <property>
+                    <name>teamcity.build.id</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>Install NodeJS</id>
+                                <phase>clean</phase>
+                                <configuration>
+                                    <target name="Installing nodeJS using n">
+                                        <exec executable="bash" dir="${project.basedir}" osfamily="unix" failonerror="false">
+                                            <arg line="-c 'sudo n 4.4.6'" />
+                                        </exec>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <version>1.4.0</version>
+                        <executions>
+                            <!--
+                            The following execution:
+                            1. reads the package.json of each module and finds their dependencies ++ devDependencies
+                            2. figures out which deps were given
+                            3. figures out which deps are external
+                            4. orders the modules so that linking can be in a safe order without having to query npmjs.org
+                            -->
+                            <execution>
+                                <id>Install Packages</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>.</workingDirectory>
+                                    <executable>npm</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                        <argument>-l</argument>
+                                        <argument>--save-dev</argument>
+                                        <argument>--no-optional</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <!--
+                            The following execution:
+                            1. Runs the grunt command
+                            2. GruntJS task runner will run all the tasks define in the 'GruntFile'
+                            -->
+                            <execution>
+                                <id>Run GruntJS Build</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>.</workingDirectory>
+                                    <executable>grunt</executable>
+                                    <arguments>
+                                        <!-- grunt build parameter (e.g. indicate grunt that we run on teamcity) -->
+                                        <argument>--buildNo=${build.number}</argument>
+                                        <argument>--buildId=${teamcity.build.id}</argument>
+                                        <argument>--buildVersion=${project.version}_${build.number}</argument>
+                                        <argument>--buildType=${buildtype}</argument>
+                                        <argument>--teamcity=true</argument>
+                                        <argument>--assetFile=${project.basedir}/target/docker-compose.yml</argument>
+                                        <!-- Print a stack trace when exiting with a warning or fatal error. -->
+                                        <argument>--stack</argument>
+                                        <!-- grunt goal... -->
+                                        <argument>ci</argument>
+                                    </arguments>
+                                    <environmentVariables>
+                                        <username>${username}</username>
+                                        <password>${password}</password>
+                                    </environmentVariables>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>docker</id>
+            <activation>
+                <property>
+                    <name>teamcity.build.id</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.liveperson.ci</groupId>
+                        <artifactId>kubernetes-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>Upload as tag and Replace</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>replace</goal>
+                                    <goal>uploadastag</goal>
+                                </goals>
+                                <configuration>
+                                    <projectName>${project.artifactId}</projectName>
+                                    <localYamlDir>${project.basedir}/target/kubernetes/</localYamlDir>
+                                    <replaceMap>
+                                        <project.version>${project.version}</project.version>
+                                        <build.number>${build.number}</build.number>
+                                        <lp.docker.image.full.name>${lp.docker.image.full.name}</lp.docker.image.full.name>
+                                    </replaceMap>
+                                    <files>
+                                        <file>nodejs-app-configmap.yaml</file>
+                                        <file>nodejs-app-app-deployment.yaml</file>
+                                        <file>nodejs-app-app-service.yaml</file>
+                                    </files>
+                                    <outputDir>${project.basedir}</outputDir>
+                                    <srcDir>${project.basedir}/deployment/kubernetes</srcDir>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>Delete Kubernetes CI Namespace</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>deletenamespace</goal>
+                                </goals>
+                                <configuration>
+                                    <skipDeleteNamespace>false</skipDeleteNamespace>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.jolokia</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <!-- Create docker image locally on the BuildAgent-->
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <id>build-app-image</id>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                    <goal>remove</goal>
+                                </goals>
+
+                                <configuration>
+                                    <docker.host>unix:///var/run/docker.sock</docker.host>
+                                    <images>
+                                        <!-- A single's image configuration -->
+                                        <image>
+                                            <name>${lp.docker.image.full.name}</name>
+                                            <build>
+                                                <assembly>
+                                                    <dockerFileDir>${project.basedir}</dockerFileDir>
+                                                </assembly>
+                                                <tags>
+                                                    <tag>${project.version}_${build.number}</tag>
+                                                </tags>
+                                            </build>
+                                        </image>
+                                    </images>
+                                    <authConfig>
+                                        <username>${lp.docker.hub.user}</username>
+                                        <password>${lp.docker.hub.password}</password>
+                                    </authConfig>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>deploy-to-kubernetes</id>
+            <activation>
+                <property>
+                    <name>teamcity.build.id</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.liveperson.ci</groupId>
+                        <artifactId>kubernetes-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy on kubernetes</id>
+                                <!-- a phase after "package" and before "integration-test" -->
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                                <configuration>
+                                    <projectName>nodejs-app</projectName>
+                                    <filesDir>${project.basedir}/target/kubernetes/</filesDir>
+                                    <getDependencies>true</getDependencies>
+                                    <yamlFiles>
+                                        <yamlFile>nodejs-app-web/${nodejs-app.web.layer.version}/nodejs-app-web-deployment.yaml</yamlFile>
+                                        <yamlFile>nodejs-app-web/${nodejs-app.web.layer.version}/nodejs-app-web-service.yaml</yamlFile>
+                                        <yamlFile>nodejs-app-web/${nodejs-app.web.layer.version}/nodejs-app-web-sslcert.yaml</yamlFile>
+                                    </yamlFiles>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>getservice-nodePort</id>
+                                <!-- a phase after "package" and before "integration-test" -->
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>getservice</goal>
+                                </goals>
+                                <configuration>
+                                    <lp.kubernetes.host>${lp.kubernetes.master}.dev.lprnd.net</lp.kubernetes.host>
+                                    <lp.kubernetes.port>8080</lp.kubernetes.port>
+                                    <lp.kubernetes.useversion>false</lp.kubernetes.useversion>
+                                    <lp.kubernetes.service.name>nodejs-app-web</lp.kubernetes.service.name>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <executions>
+                            <!--
+                            The following execution:
+                            1. Run k8s system tests via GruntJS
+                            -->
+                            <execution>
+                                <id>Run k8s system tests via GruntJS</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>.</workingDirectory>
+                                    <executable>grunt</executable>
+                                    <skip>${skip.integration.tests}</skip>
+                                    <arguments>
+                                        <argument>--buildVersion=${project.version}_${build.number}</argument>
+                                        <argument>--buildType=${buildtype}</argument>
+                                        <!-- indicate grunt that we run on teamcity -->
+                                        <argument>--teamcity=true</argument>
+                                        <argument>--webService=${web-service}</argument>
+                                        <argument>--secureWebService=${secure-web-service}</argument>
+                                        <argument>--testDomain=${lp.kubernetes.system-test}.dev.lprnd.net</argument>
+                                        <argument>--testPath=/</argument>
+                                        <argument>--stack</argument>
+                                        <argument>intern:kubernetesTest</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

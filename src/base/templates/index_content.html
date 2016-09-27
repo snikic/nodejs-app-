@@ -1,0 +1,53 @@
+<div class="row">
+	<div class="col-sm-7 col-md-7">
+		{{for _sortedModules}}
+			{{:#index%2 ? '' : '<div class="row">'}}
+				<div class="col-sm-12 col-md-6">
+					<div class="nodejs-appAppBox box">
+						{{!-- "nav-module" class for easier accessing the elements: default action (href="#") will be canceled via JS --}}
+						<a href="#" class="nav-module" data-module-id="{{uriFragmentInDoubleQuotedAttr:id}}">
+							<div class="box-header warn">
+								<h3>{{if nodejs-app && nodejs-app.nameShort}}
+										{{inHTMLData:nodejs-app.nameShort}}
+									{{else}}
+										{{inHTMLData:id}}
+									{{/if}}</h3>
+							</div>
+							<div class="box-body dker">
+								{{if nodejs-app && nodejs-app.description}}
+								<p class="m-a-0">{{inHTMLData:nodejs-app.description.substring(0,80)}}{{if
+									nodejs-app.description.length>80}}...{{/if}}</p>
+								{{/if}}
+								<div class="p-a text-center">
+									{{if contributors && contributors.length > 0 &&
+									contributors[0].nodejs-app_profile_pic}}
+									<img src="/module/{{inDoubleQuotedAttr:id}}/{{inDoubleQuotedAttr:contributors[0].nodejs-app_profile_pic}}"
+										 title="{{inDoubleQuotedAttr:contributors[0].name}}"
+										 class="img-circle w-56">
+									<p>{{:contributors[0].name.split(' ')[0]}}</p>
+									{{/if}}
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			{{:#index%2 ? '</div>' : '' }}
+			{{:(#get('array').data.length - #index - 1 == 0) && (#get('array').data.length%2 == 1) ? '</div>' : ''}}
+		{{/for}}
+	</div>
+	<div class="col-sm-5 col-md-5">
+		<div class="col-sm-12">
+			<div id="accountInfoWidget" class="box">
+				<div class="box-header info">
+					<h3>Account Overview</h3>
+				</div>
+				<div class="box-body">
+					<table id="accountInfoWidget-table" class="table">
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

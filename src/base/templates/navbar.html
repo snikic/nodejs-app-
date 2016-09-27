@@ -1,0 +1,79 @@
+<div class="navbar">
+<a class="navbar-brand">
+	<img src="/images/lp-logo-white.png" alt="." class="show lpLogo">
+</a>
+</div>
+<div flex class="hide-scroll">
+	<nav class="scroll nav-border b-warn">
+		<ul class="nav" ui-nav>
+			{{!-- "nav-home" id for easier accessing the element: default action (href="#") will be canceled via JS --}}
+			<li><a href="#" id="nav-home"><span
+				class="nav-icon"><i class="material-icons">
+				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+					<path
+						d="M24,20c-7.72,0-14,6.28-14,14h4c0-5.51,4.49-10,10-10s10,4.49,10,10h4C38,26.28,31.721,20,24,20z"
+						fill="#fcc100"></path>
+				</svg>
+			</i></span> <span class="nav-text">Mission Control</span></a></li>
+			<li class="{{if active}}active{{/if}}"><a class="activate">
+				<span class="nav-caret"><i class="fa fa-caret-down"></i></span>
+				<span class="nav-label">
+					<b class="label rounded label-sm success">{{inHTMLData:_count}}</b>
+				</span>
+				<span class="nav-icon">
+					<i class="material-icons">
+						<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+							<rect x="20" y="32" width="8" height="8" fill="#fcc100"></rect>
+							<rect x="8" y="20" width="8" height="8" fill="#fcc100"></rect>
+							<rect x="20" y="8" width="8" height="8" fill="#fcc100"></rect>
+							<rect x="32" y="20" width="8" height="8" fill="#fcc100"></rect>
+						</svg>
+					</i>
+				</span>
+				<span class="nav-text">Apps</span></a>
+				<ul class="nav-sub">
+					{{for _sortedModules}}
+					<li>
+						{{!-- "nav-module" class for easier accessing the elements: default action (href="#") will be canceled via JS --}}
+						<a href="#" data-module-id="{{uriFragmentInDoubleQuotedAttr:id}}" class="nav-element nav-module">
+							<span class="nav-text">{{if nodejs-app.nameShort}}{{inHTMLData:nodejs-app.nameShort}}{{else}}{{inHTMLData:id}}{{/if}}</span>
+						</a>
+					</li>
+					{{/for}}
+				</ul>
+			</li>
+			<li class="nav-header hidden-folded">
+				<small class="text-muted">Help</small>
+			</li>
+			{{!--
+				<li class="hidden-folded" ui-sref-active="active">
+					<a href="{{:_baseUrl}}/module/docs" ui-sref="app.docs">
+						<span class="nav-text">Documents</span>
+					</a>
+				</li>
+			--}}
+		</ul>
+	</nav>
+</div>
+<div flex-no-shrink="">
+		<ul class="nav">
+			<li>
+				<div class="b-b b m-v-sm"></div>
+			</li>
+			<li class="no-bg">
+				<a id="userPopover" data-content="..." rel="popover" data-placement="right"
+				   data-original-title="Token Information" data-trigger="hover" data-html="true">
+					<span class="nav-icon"><i class="material-icons">face</i></span>
+					<span class="nav-text">
+						<span id="username">...</span>
+						<small class="block text-muted">{{:_siteId}}</small>
+					</span>
+				</a>
+			</li>
+			<li>
+				<div class="b-b b m-t-sm"></div>
+			</li>
+			<li class="no-bg"><a id="logout"><span class="nav-icon"><i class="material-icons"></i></span> <span
+				class="nav-text">Logout</span></a></li>
+		</ul>
+</div>

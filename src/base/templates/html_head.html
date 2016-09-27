@@ -1,0 +1,45 @@
+<meta charset="utf-8"/>
+<title>Mission Control for Live Engage</title>
+<meta name="description" content="nodejs-app, we've got a problem. Mission Control is here to help."/>
+
+{{!-- set viewport --}}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+{{!-- for ios 7 style, multi-resolution icon of 152x152 --}}
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-barstyle" content="black-translucent">
+<link rel="apple-touch-icon" href="/images/rocket-icon.png">
+<meta name="apple-mobile-web-app-title" content="LE Mission Control">
+{{!-- for Chrome on Android, multi-resolution icon of 196x196 --}}
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="shortcut icon" sizes="196x196" href="/images/rocket-icon.png">
+
+{{!-- style --}}
+<link rel="stylesheet" href="/animate.css/animate.min.css" type="text/css" />
+<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="/material-design-icons/material-design-icons.css" type="text/css" />
+
+<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+{{!-- build:css ../assets/styles/app.min.css --}}
+<link rel="stylesheet" href="/styles/app.css" type="text/css" />
+{{!-- endbuild --}}
+<link rel="stylesheet" href="/styles/font.css" type="text/css" />
+
+{{!-- javascript --}}
+
+{{!-- JQUERY --}}
+<script src="/jquery.js"></script>
+<script src="/typeahead.jquery.js"></script>
+{{!-- BOOTSTRAP --}}
+<script src="/scripts/jquery/tether/dist/js/tether.min.js"></script>
+<script src="/scripts/jquery/bootstrap/dist/js/bootstrap.js"></script>
+{{!-- ALERTIFY: nice and simple alerts (JS part is loaded via require --}}
+<link rel="stylesheet" href="/css/alertify.css" type="text/css" />
+
+{{!-- nodejs-app --}}
+<script src="/ready.js"></script>
+<script data-main="/main.js" src="/require.js"></script>
+<link rel="stylesheet" href="/styles/nodejs-app.css" type="text/css" />
+
+<script src="/analytics.js?s=platform"></script>

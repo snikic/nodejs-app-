@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-domain="{{inDoubleQuotedAttr:_domain}}">
+<head>
+	<base href="{{inDoubleQuotedAttr:_domain}}/{{inDoubleQuotedAttr:_basePath}}/module/{{inDoubleQuotedAttr:_moduleId}}/">
+
+	<link rel="stylesheet" href="/styles/nodejs-app_module.css" type="text/css" />
+	{{if _defaultStyle}}
+		<!-- style -->
+		<link rel="stylesheet" href="/animate.css/animate.min.css" type="text/css" />
+		<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css" />
+		<link rel="stylesheet" href="/material-design-icons/material-design-icons.css" type="text/css" />
+
+		<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+		<!-- build:css ../assets/styles/app.min.css -->
+		<link rel="stylesheet" href="/styles/app.css" type="text/css" />
+		<!-- endbuild -->
+		<link rel="stylesheet" href="/styles/font.css" type="text/css" />
+	{{/if}}
+
+	{{if _jquery}}
+		<!-- JQUERY -->
+		<script src="/jquery.js"></script>
+		<script src="/scripts/jquery/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/scripts/jquery/plugins/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+		<link rel="stylesheet" href="/scripts/jquery/plugins/integration/bootstrap/3/dataTables.bootstrap.css" type="text/css" />
+		<!-- BOOTSTRAP -->
+		<script src="/scripts/jquery/tether/dist/js/tether.min.js"></script>
+		<script src="/scripts/jquery/bootstrap/dist/js/bootstrap.js"></script>
+		<!-- CORE -->
+		<script src="/scripts/jquery/underscore/underscore-min.js"></script>
+	{{/if}}
+
+	{{if _underscore}}
+		<script src="/scripts/underscore/underscore-min.js"></script>
+	{{/if}}
+
+	<!-- nodejs-app -->
+	<script crossorigin="anonymous" src="/ready.js"></script>
+	<script crossorigin="anonymous" src="/store2.js"></script>
+	<script crossorigin="anonymous" src="/auth/storage.js"></script>
+	<script crossorigin="anonymous" src="/crossdomain/tokenify.js"></script>
+	<script crossorigin="anonymous" src="/crossdomain/fetchify.js"></script>
+	<script crossorigin="anonymous" src="/navigation/transport.js"></script>
+
+	<script crossorigin="anonymous" src="/main_module.js"></script>
+
+	{{!-- load at the end --}}
+	<script src="/iframeResizer.contentWindow.min.js"></script>
+
+	<script src="/analytics.js?s={{inDoubleQuotedAttr:_moduleId}}"></script>
+
+	{{if _requirejs}}
+		{{!-- must be loaded as last script, since the scripts above aren't "require style" --}}
+		<script src="/require.js"></script>
+	{{/if}}
+</head>
+<body>
+	{{!-- cannot escape input, since it's (intentional) html we are inserting here --}}
+	{{:_html}}
+</body>
+</html>

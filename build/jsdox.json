@@ -1,0 +1,9 @@
+{
+    "generate": {
+        "options": {
+            "contentsTitle": "LivePerson Events"
+        },
+        "src": ["src/courier/*.js"],
+        "dest": "docs"
+    }
+}

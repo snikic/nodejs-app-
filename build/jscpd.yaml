@@ -1,0 +1,10 @@
+languages:
+  - javascript
+path: "src"
+files:
+  - "**/*.js"
+# excludes are relative from the path
+exclude:
+  - "assets/**/*.js"
+output: "dist/duplicates-report.xml"
+reporter: xml

@@ -1,0 +1,21 @@
+# used by app and web (e.g. the "domain" entry); so not app only
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodejs-app-configmap
+data:
+  # local/testing: nodejs-app.dev.lprnd.net
+  # qa: nodejs-app.dev.lprnd.net
+  # alpha: z1-a.nodejs-app.int.liveperson.net
+  # z1: z1.nodejs-app.int.liveperson.net
+  # z2: z2.nodejs-app.int.liveperson.net
+  # z3: z3.nodejs-app.int.liveperson.net
+  domain: nodejs-app.dev.lprnd.net
+  # local/testing: '1'
+  # qa: '2'
+  # alpha: '3'
+  # z1: '4'
+  # z2: '5'
+  # z3: '6'
+  ga-id: '2'

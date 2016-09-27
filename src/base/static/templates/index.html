@@ -1,0 +1,21 @@
+<div class="app">
+	<div id="aside" class="app-aside modal fade sm nav-dropdown">
+		<div class="left navside grey dk" layout="column">
+			{{include tmpl="./src/base/templates/navbar.html"/}}
+		</div>
+	</div>
+	<div id="content" class="app-content box-shadow-z2 box-radius-1x" role="main">
+		{{include tmpl="./src/base/templates/appheader.html"/}}
+		{{include tmpl="./src/base/templates/appfooter.html"/}}
+		{{include tmpl="./src/base/templates/content.html"/}}
+	</div>
+</div>
+{{include tmpl="./src/base/templates/html_includes.html"/}}
+<div id="login_modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+	 aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-sm" role="document">
+		<div id="login_modal_content" class="modal-content">
+			Logging in...
+		</div>
+	</div>
+</div>

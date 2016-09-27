@@ -1,0 +1,3 @@
+These public/private ssh keys allow read only access to the "RnD-Mannheim/nodejs-app-modules" repository. Nothing more.
+Since we need these keys during build time, we include it into the repository. However, this shouldn't be a big security,
+issue, since as mentioned, they offer only read access to one repository.

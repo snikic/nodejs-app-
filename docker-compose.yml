@@ -1,0 +1,32 @@
+version: '2'
+services:
+  nodejs-app-app:
+    image: lpdocker-registry.dev.lprnd.net/nodejs-app-app:${project.version}_${build.number}
+    container_name: nodejs-app-app
+    restart: on-failure
+    environment:
+      - debug=true
+      - logger_logging_system_console_json=false
+      - VIRTUAL_HOST=nodejs-app.dev.lprnd.net
+    expose:
+      - "10080"
+    volumes:
+      - ~/nodejs-app:/liveperson/data/nodejs-app:ro
+  nginx-reverse-proxy:
+    image: lpdocker-registry.dev.lprnd.net/nodejs-app-web-dev:1.0.0.0-SNAPSHOT_1
+    container_name: nginx-reverse-proxy
+    restart: on-failure
+    environment:
+      - DOMAIN_NAME=nodejs-app.dev.lprnd.net
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  docker-hostmanager:
+    image: iamluc/docker-hostmanager
+    container_name: docker-hostmanager
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/hosts:/hosts

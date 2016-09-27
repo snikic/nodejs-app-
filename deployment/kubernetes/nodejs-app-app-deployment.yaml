@@ -1,0 +1,92 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nodejs-app-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nodejs-app-app
+  template:
+    metadata:
+      labels:
+        name: nodejs-app-app
+        version: ${project.version}
+        buildNumber: b-${build.number}
+    spec:
+      containers:
+        - name: nodejs-app-app
+          image: ${lp.docker.image.full.name}
+          livenessProbe:
+            # pod will be come unhealthy if the probe fails 3 times (with 10sec in between); see:
+            # http://kubernetes.io/docs/api-reference/v1/definitions/#_v1_probe
+            httpGet:
+              path: /_health/current
+              port: 10080
+            initialDelaySeconds: 20
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /_health/startup
+              port: 10080
+            initialDelaySeconds: 20
+            timeoutSeconds: 10
+          ports:
+            - containerPort: 10080
+          terminationMessagePath: /dev/termination-log
+          env:
+            - name: domain
+              valueFrom:
+                configMapKeyRef:
+                  name: nodejs-app-configmap
+                  key: domain
+            - name: ga_id
+              valueFrom:
+                configMapKeyRef:
+                  name: nodejs-app-configmap
+                  key: ga-id
+            - name: datacenter
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: datacenter
+            - name: zone
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: zone
+            - name: authDomain
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: auth-domain
+            - name: serviceDirectory_url
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: boot-directorypath
+            - name: serviceDirectory_port
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: boot-directoryport
+            - name: serviceDirectory_username
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: boot-authenticationname
+            - name: serviceDirectory_credentials
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: boot-credentials
+            - name: serviceDirectory_ldapDN
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: service-directory-lookup-context
+            - name: csds_domain
+              valueFrom:
+                configMapKeyRef:
+                  name: default-app
+                  key: csds-domain

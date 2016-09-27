@@ -1,0 +1,11 @@
+{
+    "options": {
+        "configFile": "build/.eslintrc.json",
+        "ignorePattern": [
+            "node_modules/**/*.js",
+            "src/assets/**/*.js"
+        ],
+        "warnFileIgnored": false
+    },
+    "target": "src/**/*.js"
+}

@@ -1,0 +1,77 @@
+.m-a-sm { margin:        ($spacer * 0.5) !important; }
+.m-t-sm { margin-top:    ($spacer-y * 0.5) !important; }
+.m-r-sm { margin-right:  ($spacer-y * 0.5) !important; }
+.m-b-sm { margin-bottom: ($spacer-y * 0.5) !important; }
+.m-l-sm { margin-left:   ($spacer-y * 0.5) !important; }
+.m-x-sm { margin-right:  ($spacer-x * 0.5) !important; margin-left:   ($spacer-x * 0.5) !important; }
+.m-y-sm { margin-top:    ($spacer-y * 0.5) !important; margin-bottom: ($spacer-y * 0.5) !important; }
+
+.m-a-xs { margin:        ($spacer * 0.25) !important; }
+.m-t-xs { margin-top:    ($spacer-y * 0.25) !important; }
+.m-r-xs { margin-right:  ($spacer-y * 0.25) !important; }
+.m-b-xs { margin-bottom: ($spacer-y * 0.25) !important; }
+.m-l-xs { margin-left:   ($spacer-y * 0.25) !important; }
+.m-x-xs { margin-right:  ($spacer-x * 0.25) !important; margin-left:   ($spacer-x * 0.25) !important; }
+.m-y-xs { margin-top:    ($spacer-y * 0.25) !important; margin-bottom: ($spacer-y * 0.25) !important; }
+
+.p-a-sm { padding:        ($spacer * 0.5) !important; }
+.p-t-sm { padding-top:    ($spacer-y * 0.5) !important; }
+.p-r-sm { padding-right:  ($spacer-y * 0.5) !important; }
+.p-b-sm { padding-bottom: ($spacer-y * 0.5) !important; }
+.p-l-sm { padding-left:   ($spacer-y * 0.5) !important; }
+.p-x-sm { padding-right:  ($spacer-x * 0.5) !important; padding-left:   ($spacer-x * 0.5) !important; }
+.p-y-sm { padding-top:    ($spacer-y * 0.5) !important; padding-bottom: ($spacer-y * 0.5) !important; }
+
+.p-a-xs { padding:        ($spacer * 0.25) !important; }
+.p-t-xs { padding-top:    ($spacer-y * 0.25) !important; }
+.p-r-xs { padding-right:  ($spacer-y * 0.25) !important; }
+.p-b-xs { padding-bottom: ($spacer-y * 0.25) !important; }
+.p-l-xs { padding-left:   ($spacer-y * 0.25) !important; }
+.p-x-xs { padding-right:  ($spacer-x * 0.25) !important; padding-left:   ($spacer-x * 0.25) !important; }
+.p-y-xs { padding-top:    ($spacer-y * 0.25) !important; padding-bottom: ($spacer-y * 0.25) !important; }
+
+.padding{
+  padding: 1.5rem 1.5rem;
+}
+.margin{
+  margin-bottom: 1.5rem;
+}
+
+.padding-out{
+  margin: -1.5rem -1.5rem;
+}
+
+@include media-breakpoint-down(md) {
+  .padding{
+    padding: 1rem 1rem;
+  }
+  .padding-out{
+    margin: -1rem -1rem;
+  }
+  .margin{
+    margin-bottom: 1rem;
+  }
+  .box,
+  .box-color{
+    margin-bottom: 1rem;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .padding{
+    padding: 0.5rem 0.5rem;
+  }
+  .padding-out{
+    margin: -0.5rem -0.5rem;
+  }
+  .margin{
+    margin-bottom: 0.5rem;
+  }
+  .box,
+  .box-color{
+    margin-bottom: 0.5rem;
+  }
+  .no-padding-xs{
+    padding: 0;
+  }
+}
